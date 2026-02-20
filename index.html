@@ -54,16 +54,6 @@ border:1px solid #ccc;
 font-size:16px;
 }
 
-.last-measurement{
-  margin-top:15px;
-  padding:10px;
-  background:#f1f3f2;
-  border-radius:8px;
-  text-align:center;
-  font-size:14px;
-  color:#555;
-}
-
 .version{
   margin-top:25px;
   text-align:center;
@@ -95,10 +85,6 @@ color:#0f3b2e;
 
 <label>Vægt af 100 ml svulmet ismix (y)</label>
 <input type="number" id="y" step="any">
-
-<div class="last-measurement" id="lastMeasurement">
-Seneste måling= -
-</div>
   
 <div class="result" id="result">
 Her kommer resultatet
@@ -117,18 +103,12 @@ y=parseFloat(y);
 
 if(!isNaN(x)&&!isNaN(y)&&y!==0){
 let result=((x/y)*100)-100;
-let formatted=result.toFixed(2)+" %";
-
-document.getElementById("result").innerHTML=formatted;
-
-document.getElementById("lastMeasurement").innerHTML=
-"Seneste måling: " + formatted + 
-" (x: " + x + " g / y: " + y + " g)";
+document.getElementById("result").innerHTML=result.toFixed(2)+" %";
 }else{
-
 document.getElementById("result").innerHTML="Indtast gyldige tal";
 }
 }
+
 
 document.getElementById("x").addEventListener("input",calculate);
 document.getElementById("y").addEventListener("input",calculate);
