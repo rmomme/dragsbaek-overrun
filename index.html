@@ -117,8 +117,15 @@ y=parseFloat(y);
 
 if(!isNaN(x)&&!isNaN(y)&&y!==0){
 let result=((x/y)*100)-100;
-document.getElementById("result").innerHTML=result.toFixed(2)+" %";
+let formatted=result.toFixed(2)+" %";
+
+document.getElementById("result").innerHTML=formatted;
+
+document.getElementById("lastMeasurement").innerHTML=
+"Seneste måling: " + formatted + 
+" (x: " + x + " g / y: " + y + " g)";
 }else{
+
 document.getElementById("result").innerHTML="Indtast gyldige tal";
 }
 }
