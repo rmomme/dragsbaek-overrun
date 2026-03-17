@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dragsbæk Overrun</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f3b2e">
+
+<style>
+body{
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:#f4f6f5;
+margin:0;
+padding:20px;
+}
+
+.card{
+max-width:420px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.logo{
+width:180px;
+display:block;
+margin:0 auto 20px auto;
+}
+
+h1{
+text-align:center;
+font-size:18px;
+color:#0f3b2e;
+margin-bottom:20px;
+}
+
+label{
+font-weight:600;
+display:block;
+margin-top:15px;
+text-align:center;
+}
+
+input{
+width:70%;  
+padding:14px;
+margin:5px auto 0 auto;
+display:block;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+.version{
+  margin-top:25px;
+  text-align:center;
+  font-size:12px;
+  color:#888;
+}
+
+.result{
+margin-top:25px;
+padding:20px;
+background:#e7f2ee;
+border-radius:12px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+color:#0f3b2e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<img src="logo.png" class="logo">
+<h1>Dragsbæk Ice Cream & Desserts<br>Overrun Calculator</h1>
+
+<label>Vægt af 100 ml flydende ismix (x)</label>
+<input type="number" id="x" step="any">
+
+<label>Vægt af 100 ml svulmet ismix (y)</label>
+<input type="number" id="y" step="any">
+  
+<div class="result" id="result">
+Her kommer resultatet
+</div>
+
+<div class="version">
+Version 1.0
+</div>
+
+<script>
+function calculate(){
+let x=document.getElementById("x").value.replace(",",".");
+let y=document.getElementById("y").value.replace(",",".");
+x=parseFloat(x);
+y=parseFloat(y);
+
+if(!isNaN(x)&&!isNaN(y)&&y!==0){
+let result=((x/y)*100)-100;
+document.getElementById("result").innerHTML=result.toFixed(2)+" %";
+}else{
+document.getElementById("result").innerHTML="Indtast gyldige tal";
+}
+}
+
+
+document.getElementById("x").addEventListener("input",calculate);
+document.getElementById("y").addEventListener("input",calculate);
+
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
