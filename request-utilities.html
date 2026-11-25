@@ -197,8 +197,12 @@ const errorMsg = document.getElementById("errorMsg");
 const sendBtn = document.getElementById("sendBtn");
 
 const recipient = document.querySelector(
-'input[name="recipient"]:checked'
+  'input[name="recipient"]:checked'
 ).value;
+
+const emailAddress = recipient === "Kasper"
+  ? "kasper.boamah@dragsbaek.dk"
+  : "rm@dragsbaek.dk";
 
 if (!message || !name) {
 errorMsg.textContent = "Du skal udfylde både besked og navn.";
