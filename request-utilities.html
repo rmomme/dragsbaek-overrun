@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="da">
 <head>
@@ -62,6 +63,34 @@ min-height:130px;
 resize:vertical;
 }
 
+.recipient{
+width:90%;
+margin:5px auto 0 auto;
+display:flex;
+gap:10px;
+}
+
+.recipient label{
+flex:1;
+margin:0;
+padding:13px 5px;
+border:1px solid #ccc;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+}
+
+.recipient input{
+width:auto;
+display:inline-block;
+margin:0 5px 0 0;
+}
+
+.recipient label:has(input:checked){
+border:2px solid #0f3b2e;
+background:#edf4f0;
+}
+
 .sendBtn{
 display:block;
 width:90%;
@@ -73,9 +102,14 @@ font-size:18px;
 font-weight:600;
 background:#0f3b2e;
 color:white;
-text-decoration:none;
 box-sizing:border-box;
 cursor:pointer;
+transition:opacity 0.2s;
+}
+
+.sendBtn:disabled{
+opacity:0.55;
+cursor:not-allowed;
 }
 
 .backLink{
@@ -105,9 +139,26 @@ color:#888;
 <body>
 
 <div class="card">
+
 <img src="logo.png" class="logo">
 
 <h1>Send forespørgsel</h1>
+
+<label>Hvem skal modtage beskeden?</label>
+
+<div class="recipient">
+
+<label>
+<input type="radio" name="recipient" value="Rasmus" checked>
+Send til Rasmus
+</label>
+
+<label>
+<input type="radio" name="recipient" value="Kasper">
+Send til Kasper
+</label>
+
+</div>
 
 <label for="message">Hvad mangler du?</label>
 <textarea id="message" placeholder="Skriv hvad du mangler"></textarea>
@@ -117,11 +168,14 @@ color:#888;
 
 <div class="error" id="errorMsg"></div>
 
-<button class="sendBtn" onclick="sendRequest()">Send</button>
+<button class="sendBtn" id="sendBtn" onclick="sendRequest()">
+Send
+</button>
 
 <a class="backLink" href="index.html">← Tilbage</a>
 
-<div class="version">Version 1.2</div>
+<div class="version">Version 1.3</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -131,29 +185,62 @@ color:#888;
 emailjs.init("gdKd_m0NTE-hAOQUk");
 })();
 
+let sending = false;
+
 function sendRequest(){
+
+if(sending) return;
+
 const message = document.getElementById("message").value.trim();
 const name = document.getElementById("name").value.trim();
 const errorMsg = document.getElementById("errorMsg");
+const sendBtn = document.getElementById("sendBtn");
+
+const recipient = document.querySelector(
+'input[name="recipient"]:checked'
+).value;
 
 if (!message || !name) {
 errorMsg.textContent = "Du skal udfylde både besked og navn.";
 return;
 }
 
+sending = true;
+sendBtn.disabled = true;
+sendBtn.textContent = "Sender...";
 errorMsg.textContent = "";
 
 emailjs.send("service_yggfz12", "template_vyngmgd", {
+
 name: name,
-message: message
+message: message,
+recipient: recipient
+
 })
+
 .then(function() {
+
 alert("Din besked er sendt 👍");
+
 document.getElementById("message").value = "";
 document.getElementById("name").value = "";
-}, function(error) {
+
+})
+
+.catch(function(error) {
+
 errorMsg.textContent = "Fejl ved afsendelse. Prøv igen.";
+
+})
+
+.finally(function() {
+
+sending = false;
+sendBtn.disabled = false;
+sendBtn.textContent = "Send";
+
 });
+
 }
 </script>
 
