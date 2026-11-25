@@ -47,7 +47,7 @@ text-align:center;
 }
 
 textarea,
-input{
+input[type="text"]{
 width:90%;
 padding:14px;
 margin:5px auto 0 auto;
@@ -78,12 +78,11 @@ border:1px solid #ccc;
 border-radius:10px;
 cursor:pointer;
 font-size:15px;
+box-sizing:border-box;
 }
 
 .recipient input{
-width:auto;
-display:inline-block;
-margin:0 5px 0 0;
+margin-right:5px;
 }
 
 .recipient label:has(input:checked){
@@ -104,7 +103,6 @@ background:#0f3b2e;
 color:white;
 box-sizing:border-box;
 cursor:pointer;
-transition:opacity 0.2s;
 }
 
 .sendBtn:disabled{
@@ -197,14 +195,14 @@ const errorMsg = document.getElementById("errorMsg");
 const sendBtn = document.getElementById("sendBtn");
 
 const recipient = document.querySelector(
-  'input[name="recipient"]:checked'
+'input[name="recipient"]:checked'
 ).value;
 
 const emailAddress = recipient === "Kasper"
-  ? "kasper.boamah@dragsbaek.dk"
-  : "rm@dragsbaek.dk";
+? "kasper.boamah@dragsbaek.dk"
+: "rm@dragsbaek.dk";
 
-if (!message || !name) {
+if(!message || !name){
 errorMsg.textContent = "Du skal udfylde både besked og navn.";
 return;
 }
@@ -218,11 +216,12 @@ emailjs.send("service_yggfz12", "template_vyngmgd", {
 
 name: name,
 message: message,
-recipient: recipient
+recipient: recipient,
+to_email: emailAddress
 
 })
 
-.then(function() {
+.then(function(){
 
 alert("Din besked er sendt 👍");
 
@@ -231,13 +230,14 @@ document.getElementById("name").value = "";
 
 })
 
-.catch(function(error) {
+.catch(function(error){
 
+console.error("EmailJS fejl:", error);
 errorMsg.textContent = "Fejl ved afsendelse. Prøv igen.";
 
 })
 
-.finally(function() {
+.finally(function(){
 
 sending = false;
 sendBtn.disabled = false;
